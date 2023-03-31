@@ -1,0 +1,2 @@
+# See: https://github.com/liquibase/liquibase/tree/master/liquibase-core/src/test/resources/liquibase/parser/core/yaml
+databaseChangeLog: []
