@@ -1,1 +1,8 @@
+context:
+  initializer:
+    classes: dev.citc.samples.loom.boot.Application
 
+spring:
+  web:
+    resources:
+      add-mappings: 'false'

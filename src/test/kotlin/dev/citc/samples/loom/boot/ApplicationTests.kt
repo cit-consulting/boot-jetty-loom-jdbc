@@ -1,6 +1,6 @@
-package dev.citc.sampes.jvj
+package dev.citc.samples.loom.boot
 
-import dev.citc.sampes.jvj.test.FullAppContextTest
+import dev.citc.samples.loom.boot.test.FullAppContextTest
 import org.junit.jupiter.api.Test
 
 @FullAppContextTest

@@ -5,7 +5,7 @@ plugins {
     kotlin("plugin.spring") version "1.8.20-RC2"
 }
 
-group = "dev.citc.sampes"
+group = "dev.citc.samples"
 version = "0.0.1-SNAPSHOT"
 
 configurations {
@@ -48,9 +48,13 @@ dependencies {
     runtimeOnly("org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
     testImplementation("io.zonky.test:embedded-database-spring-test:2.2.0")
     testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:15.2.0"))
     testImplementation("io.zonky.test:embedded-postgres:2.0.3")
+
+    testImplementation("net.javacrumbs.json-unit:json-unit:2.36.1")
+    testImplementation("io.rest-assured:kotlin-extensions:5.3.0")
 }
 
 java {
