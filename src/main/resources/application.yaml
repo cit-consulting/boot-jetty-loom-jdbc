@@ -6,3 +6,8 @@ spring:
   web:
     resources:
       add-mappings: 'false'
+server:
+  jetty:
+    # (optional) no need for many platform threads because requests handled by virtual threads
+    threads:
+      min: 0

@@ -18,8 +18,7 @@ configurations {
                     "We need Jetty"
                 )
             }
-            // do this in maven...
-            /* Attempt to use Jetty 12 failed autoconfiguration
+            /* Attempt to use Jetty 12 fails Boot autoconfiguration
             if (moduleSelector?.group == "org.eclipse.jetty") {
                 val notation = when (moduleSelector.module) {
                     "jetty-servlets" -> "org.eclipse.jetty.ee10:jetty-ee10-servlets"
@@ -42,8 +41,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.liquibase:liquibase-core")
 
-    // minimal non synchronized version - remove when Boot 3.2 released
-    runtimeOnly("org.postgresql:postgresql:42.6.0")
+    // minimal non synchronized version 42.6.0, so use Boot 3.1+ or specify version manually
+    runtimeOnly("org.postgresql:postgresql")
     // TODO https://github.com/spring-projects/spring-framework/issues/29585
     runtimeOnly("org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2")
 
@@ -72,7 +71,11 @@ tasks {
         }
     }
     withType<Test> {
+        jvmArgs("--enable-preview")
         useJUnitPlatform()
+    }
+    bootRun {
+        jvmArgs("--enable-preview", "-Xmx512M", "-Dspring.profiles.active=development")
     }
 }
 
