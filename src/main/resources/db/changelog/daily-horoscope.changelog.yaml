@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - logicalFilePath: daily-horoscope
+  - changeSet:
+      id: create_daily_horoscope
+      author: vkonkov
+      changes:
+        - createTable:
+            tableName: daily_horoscope
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  startWith: 10000
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_daily_horoscope
+              - column:
+                  name: zodiac_sign
+                  type: VARCHAR(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: when_created
+                  type: TIMESTAMP WITH TIME ZONE
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: daily_horoscope
+            constraintName: uniq_daily_horoscope_date_sign
+            columnNames: date,zodiac_sign

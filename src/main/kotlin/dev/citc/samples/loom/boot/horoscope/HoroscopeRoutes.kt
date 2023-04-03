@@ -1,14 +1,18 @@
 package dev.citc.samples.loom.boot.horoscope
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.http.MediaType
 import org.springframework.web.servlet.function.router
 import java.time.LocalDate
+import java.util.EnumSet
 
-internal fun horoscopeRouter(jsonMapper: ObjectMapper) = router {
-    GET("/horoscopes/daily") {
-        val resp = jsonMapper.createObjectNode().apply {
-            put("date", LocalDate.now().toString())
+internal fun horoscopeRouter(horoscopeRepository: HoroscopeRepository) = router {
+    accept(MediaType.APPLICATION_JSON).nest {
+        GET("/horoscopes/daily") {
+            ok().body(horoscopeRepository.findDailyForSignsAt(EnumSet.allOf(ZodiacSign::class.java), LocalDate.now()))
         }
-        ok().body(resp)
+
+        GET("/horoscopes/weekly") {
+            ok().body(horoscopeRepository.findWeeklyForSignsAt(EnumSet.allOf(ZodiacSign::class.java), LocalDate.now()))
+        }
     }
 }

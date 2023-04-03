@@ -1,0 +1,10 @@
+### Development config ###
+logging:
+  level:
+    web: DEBUG
+
+datasource:
+  host: localhost
+  database: devdb
+  password: password
+  username: devdb_owner

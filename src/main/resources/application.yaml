@@ -1,8 +1,20 @@
+datasource:
+  port: 5432
+  schema: public
+
 context:
   initializer:
     classes: dev.citc.samples.loom.boot.Application
 
 spring:
+  datasource:
+    password: ${datasource.password}
+    hikari:
+      initialization-fail-timeout: '20000'
+      maximum-pool-size: '40'
+      schema: ${datasource.schema}
+    url: jdbc:postgresql://${datasource.host}:${datasource.port}/${datasource.database}
+    username: ${datasource.username}
   web:
     resources:
       add-mappings: 'false'

@@ -1,2 +1,6 @@
 # See: https://github.com/liquibase/liquibase/tree/master/liquibase-core/src/test/resources/liquibase/parser/core/yaml
-databaseChangeLog: []
+databaseChangeLog:
+  - include:
+      file: db/changelog/daily-horoscope.changelog.yaml
+  - include:
+      file: db/changelog/weekly-horoscope.changelog.yaml

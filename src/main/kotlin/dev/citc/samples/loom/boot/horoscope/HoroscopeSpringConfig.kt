@@ -6,4 +6,5 @@ import org.springframework.context.support.beans
 
 object HoroscopeSpringConfig : ApplicationContextInitializer<GenericApplicationContext> by beans({
     bean(::horoscopeRouter)
+    bean<JdbcHoroscopeRepository>()
 })
