@@ -1,7 +1,7 @@
 package dev.citc.samples.loom.boot
 
 import dev.citc.samples.loom.boot.horoscope.HoroscopeSpringConfig
-import org.eclipse.jetty.util.VirtualThreads
+import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.embedded.jetty.JettyServerCustomizer
@@ -18,10 +18,10 @@ class Application : ApplicationContextInitializer<GenericApplicationContext> {
         beans {
             bean {
                 JettyServerCustomizer { server ->
-                    val threadPool = server.threadPool
-                    if (threadPool is VirtualThreads.Configurable) {
-                        threadPool.virtualThreadsExecutor = Executors.newVirtualThreadPerTaskExecutor()
-                    }
+                    val threadPool = server.threadPool as QueuedThreadPool
+                    threadPool.virtualThreadsExecutor = Executors.newVirtualThreadPerTaskExecutor()
+                    // to force Jetty execute requests on Virtual Threads Executor
+                    threadPool.reservedThreads = 0
                 }
             }
             bean<ConcurrentTaskScheduler>(name = "taskScheduler", isLazyInit = true) {

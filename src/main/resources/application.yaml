@@ -11,7 +11,7 @@ spring:
     password: ${datasource.password}
     hikari:
       initialization-fail-timeout: '20000'
-      maximum-pool-size: '40'
+      maximum-pool-size: '80'
       schema: ${datasource.schema}
     url: jdbc:postgresql://${datasource.host}:${datasource.port}/${datasource.database}
     username: ${datasource.username}
@@ -20,6 +20,7 @@ spring:
       add-mappings: 'false'
 server:
   jetty:
-    # (optional) no need for many platform threads because requests handled by virtual threads
+    # for default settings 8/200 Jetty allocates 200 threads and not use it... So shrink it to minimum
     threads:
-      min: 0
+      max: 8
+      min: 8

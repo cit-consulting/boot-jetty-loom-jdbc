@@ -1,0 +1,4 @@
+GET http://localhost:8080/horoscopes/daily
+
+###
+GET http://localhost:8080/horoscopes/weekly
