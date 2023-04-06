@@ -10,6 +10,9 @@ import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.beans
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler
 import java.util.concurrent.Executors
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 @SpringBootApplication
 class Application : ApplicationContextInitializer<GenericApplicationContext> {
@@ -19,7 +22,18 @@ class Application : ApplicationContextInitializer<GenericApplicationContext> {
             bean {
                 JettyServerCustomizer { server ->
                     val threadPool = server.threadPool as QueuedThreadPool
-                    threadPool.virtualThreadsExecutor = Executors.newVirtualThreadPerTaskExecutor()
+                    // Unlimited level of concurrency
+                    // threadPool.virtualThreadsExecutor = Executors.newVirtualThreadPerTaskExecutor()
+
+                    // Limited level of concurrency
+                    threadPool.virtualThreadsExecutor = ThreadPoolExecutor(
+                        0,
+                        2000, // concurrency limit
+                        100,
+                        TimeUnit.MILLISECONDS,
+                        SynchronousQueue(),
+                        Thread.ofVirtual().factory()
+                    )
                     // to force Jetty execute requests on Virtual Threads Executor
                     threadPool.reservedThreads = 0
                 }

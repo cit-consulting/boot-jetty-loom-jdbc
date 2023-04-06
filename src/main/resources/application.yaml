@@ -20,7 +20,8 @@ spring:
       add-mappings: 'false'
 server:
   jetty:
-    # for default settings 8/200 Jetty allocates 200 threads and not use it... So shrink it to minimum
+    # For default settings 8/200 and configured Virtual Thread executor Jetty allocates 200 threads and not use it...
+    # These threads are used by NIO selectors and connection acceptors so shrink it to reasonable minimum.
     threads:
-      max: 8
-      min: 8
+      max: 4
+      min: 4
