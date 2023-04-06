@@ -1,7 +1,7 @@
-# Spring Boot + Jetty + Virtual Threads demo
+# Spring Boot + Virtual Threads demo
 
-## Benchmark
+## Generate load
 
 To run simple benchmark:
 
-`wrk -c 200 -t 100 -d 60s --latency http://localhost:8080/horoscopes/weekly`
+`hey -c 1000 -n 100000 http://localhost:8080/horoscopes/daily`

@@ -3,6 +3,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.8.20"
     kotlin("plugin.spring") version "1.8.20"
+    id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
 group = "dev.citc.samples"
@@ -46,6 +47,9 @@ dependencies {
     // TODO https://github.com/spring-projects/spring-framework/issues/29585
     runtimeOnly("org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2")
 
+    runtimeOnly("org.springframework.boot:spring-boot-starter-actuator")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testImplementation("io.zonky.test:embedded-database-spring-test:2.2.0")
@@ -61,6 +65,25 @@ java {
         // TODO use 20 when kotlin supports it
         languageVersion.set(JavaLanguageVersion.of(19))
         vendor.set(JvmVendorSpec.AZUL)
+    }
+}
+
+jib {
+    from {
+        image = "azul/zulu-openjdk:20"
+    }
+    to {
+        setImage(provider { "ghcr.io/cit-consulting/$name:$version" })
+    }
+    container {
+        environment = mapOf(
+            "JAVA_TOOL_OPTIONS" to listOf(
+                "-Xshare:off",
+                "-XX:MaxRAMPercentage=40",
+                "--enable-preview",
+            ).joinToString(" ")
+        )
+        user = "nobody"
     }
 }
 

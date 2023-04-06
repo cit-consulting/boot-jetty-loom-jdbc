@@ -1,0 +1,29 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deps
+  - ../base
+secretGenerator:
+  - name: boot-loom-jdbc-config
+    files:
+      - application.yaml
+patchesStrategicMerge:
+  - |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: boot-loom-jdbc
+    spec:
+      template:
+        spec:
+          containers:
+            - name: boot-loom-jdbc
+              volumeMounts:
+                - name: database-config
+                  mountPath: /config.d/database-config/datasource
+                  readOnly: true
+          volumes:
+            - name: database-config
+              secret:
+                secretName: postgresql-dev-db-secret

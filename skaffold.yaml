@@ -1,0 +1,25 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: boot-loom-jdbc
+build:
+  artifacts:
+    - image: ghcr.io/cit-consulting/boot-loom-jdbc
+      jib: {}
+  local:
+    push: false
+deploy:
+  tolerateFailuresUntilDeadline: true
+manifests:
+  kustomize:
+    paths:
+      - k8s/dev
+profiles:
+  - name: depsOnly
+    patches:
+      - op: remove
+        path: /build
+    manifests:
+      kustomize:
+        paths:
+          - k8s/dev/deps

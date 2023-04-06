@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: populate-test-data
+spec:
+  template:
+    spec:
+      containers:
+        - name: postgresql
+          image: bitnami/postgresql:latest
+          command: [ "psql" ]
+          args: [
+            "-h", "$(PGHOST)",
+            "-p", "$(PGPORT)",
+            "-d", "$(PGDATABASE)",
+            "-U", "$(PGUSERNAME)",
+            "--set=ON_ERROR_STOP=on",
+            "--single-transaction",
+            "-f", "/opt/test-data/script.sql" ]
+          env:
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-dev-db-secret
+                  key: host
+            - name: PGPORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-dev-db-secret
+                  key: port
+            - name: PGUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-dev-db-secret
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-dev-db-secret
+                  key: password
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-dev-db-secret
+                  key: database
+          volumeMounts:
+            - mountPath: /opt/test-data
+              name: test-data
+      restartPolicy: OnFailure
+      activeDeadlineSeconds: 600
+      volumes:
+        - name: test-data
+          configMap:
+            name: test-data-sql

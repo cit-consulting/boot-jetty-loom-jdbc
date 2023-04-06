@@ -25,3 +25,17 @@ server:
     threads:
       max: 4
       min: 4
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: db
+      probes:
+        enabled: 'true'
+  server:
+    port: 8181
