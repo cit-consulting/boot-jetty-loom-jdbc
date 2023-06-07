@@ -1,8 +1,8 @@
 plugins {
-    id("org.springframework.boot") version "3.1.0-RC1"
+    id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.20"
-    kotlin("plugin.spring") version "1.8.20"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.spring") version "1.8.21"
     id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
@@ -42,7 +42,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.liquibase:liquibase-core")
 
-    // minimal non synchronized version 42.6.0, so use Boot 3.1+ or specify version manually
     runtimeOnly("org.postgresql:postgresql")
     // TODO https://github.com/spring-projects/spring-framework/issues/29585
     runtimeOnly("org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2")
@@ -52,11 +51,11 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    testImplementation("io.zonky.test:embedded-database-spring-test:2.2.0")
-    testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:15.2.0"))
-    testImplementation("io.zonky.test:embedded-postgres:2.0.3")
+    testImplementation("io.zonky.test:embedded-database-spring-test:2.3.0")
+    testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:15.3.0"))
+    testImplementation("io.zonky.test:embedded-postgres:2.0.4")
 
-    testImplementation("net.javacrumbs.json-unit:json-unit:2.37.0")
+    testImplementation("net.javacrumbs.json-unit:json-unit:2.38.0")
     testImplementation("io.rest-assured:kotlin-extensions:5.3.0")
 }
 
@@ -105,5 +104,4 @@ tasks {
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://repo.spring.io/milestone") }
 }
