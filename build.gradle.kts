@@ -1,9 +1,9 @@
 plugins {
     id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.21"
-    kotlin("plugin.spring") version "1.8.21"
-    id("com.google.cloud.tools.jib") version "3.3.1"
+    kotlin("jvm") version "1.9.0-RC"
+    kotlin("plugin.spring") version "1.9.0-RC"
+    id("com.google.cloud.tools.jib") version "3.3.2"
 }
 
 group = "dev.citc.samples"
@@ -56,13 +56,12 @@ dependencies {
     testImplementation("io.zonky.test:embedded-postgres:2.0.4")
 
     testImplementation("net.javacrumbs.json-unit:json-unit:2.38.0")
-    testImplementation("io.rest-assured:kotlin-extensions:5.3.0")
+    testImplementation("io.rest-assured:kotlin-extensions:5.3.1")
 }
 
 java {
     toolchain {
-        // TODO use 20 when kotlin supports it
-        languageVersion.set(JavaLanguageVersion.of(19))
+        languageVersion.set(JavaLanguageVersion.of(20))
         vendor.set(JvmVendorSpec.AZUL)
     }
 }
