@@ -7,6 +7,9 @@ context:
     classes: dev.citc.samples.loom.boot.Application
 
 spring:
+  threads:
+    virtual:
+      enabled: true
   datasource:
     password: ${datasource.password}
     hikari:

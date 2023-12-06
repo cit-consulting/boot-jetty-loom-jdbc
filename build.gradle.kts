@@ -1,9 +1,9 @@
 plugins {
-    id("org.springframework.boot") version "3.1.0"
-    id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.9.0-RC"
-    kotlin("plugin.spring") version "1.9.0-RC"
-    id("com.google.cloud.tools.jib") version "3.3.2"
+    id("org.springframework.boot") version "3.2.0"
+    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("jvm") version "1.9.21"
+    kotlin("plugin.spring") version "1.9.21"
+    id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 group = "dev.citc.samples"
@@ -19,18 +19,6 @@ configurations {
                     "We need Jetty"
                 )
             }
-            /* Attempt to use Jetty 12 fails Boot autoconfiguration
-            if (moduleSelector?.group == "org.eclipse.jetty") {
-                val notation = when (moduleSelector.module) {
-                    "jetty-servlets" -> "org.eclipse.jetty.ee10:jetty-ee10-servlets"
-                    "jetty-servlet" -> "org.eclipse.jetty.ee10:jetty-ee10-servlet"
-                    "jetty-annotations" -> "org.eclipse.jetty.ee10:jetty-ee10-annotations"
-                    "jetty-webapp" -> "org.eclipse.jetty.ee10:jetty-ee10-webapp"
-                    else -> "${moduleSelector.group}:${moduleSelector.module}"
-                }
-                useTarget("$notation:12.0.0.beta0")
-            }
-            */
         }
     }
 }
@@ -43,32 +31,30 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
 
     runtimeOnly("org.postgresql:postgresql")
-    // TODO https://github.com/spring-projects/spring-framework/issues/29585
-    runtimeOnly("org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2")
 
     runtimeOnly("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    testImplementation("io.zonky.test:embedded-database-spring-test:2.3.0")
-    testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:15.3.0"))
-    testImplementation("io.zonky.test:embedded-postgres:2.0.4")
+    testImplementation("io.zonky.test:embedded-database-spring-test:2.4.0")
+    testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:16.1.1"))
+    testImplementation("io.zonky.test:embedded-postgres:2.0.6")
 
-    testImplementation("net.javacrumbs.json-unit:json-unit:2.38.0")
-    testImplementation("io.rest-assured:kotlin-extensions:5.3.1")
+    testImplementation("net.javacrumbs.json-unit:json-unit:3.2.2")
+    testImplementation("io.rest-assured:kotlin-extensions:5.3.2")
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(20))
+        languageVersion.set(JavaLanguageVersion.of(21))
         vendor.set(JvmVendorSpec.AZUL)
     }
 }
 
 jib {
     from {
-        image = "azul/zulu-openjdk:20"
+        image = "azul/zulu-openjdk:21"
     }
     to {
         setImage(provider { "ghcr.io/cit-consulting/$name:$version" })
